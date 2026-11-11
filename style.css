@@ -1,0 +1,172 @@
+/* =========================================================
+   CALCULATOR STYLES
+   ========================================================= */
+
+/* ----- COLORS (change these to restyle everything) ----- */
+:root {
+    --bg: #e9edf3;          /* page background */
+    --body: #1c1f26;        /* calculator body */
+    --screen: #0f1115;      /* display background */
+    --key: #2c313c;         /* number keys */
+    --key-hover: #3a404d;
+    --function: #4a5161;    /* AC, backspace, % */
+    --operator: #ff9f1c;    /* + − × ÷ (orange) */
+    --operator-on: #fff4e0; /* operator that's currently picked */
+    --text: #f3f4f7;
+    --muted: #9aa0ad;
+}
+
+/* width/height include padding and borders (easier sizing) */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 24px 16px;
+    background: var(--bg);
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;          /* centers the calculator */
+    justify-content: center;
+    gap: 16px;
+}
+
+/* ===== CALCULATOR BODY ===== */
+.calculator {
+    width: 100%;
+    max-width: 360px;             /* never wider than this, shrinks on phones */
+    background: var(--body);
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== DISPLAY ===== */
+.display {
+    background: var(--screen);
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    text-align: right;            /* numbers line up on the right like a real calculator */
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;    /* pushes the text to the bottom */
+}
+
+.expression {
+    margin: 0;
+    min-height: 1.4em;            /* keeps its space even when empty */
+    font-size: 1rem;
+    color: var(--muted);
+}
+
+.screen {
+    margin: 0;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--text);
+    /* if a number is still too long, it gets cut off with "…" instead of breaking the layout */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* smaller text for long numbers (JavaScript adds this class) */
+.screen.small {
+    font-size: 1.9rem;
+}
+
+/* ===== KEYS (Flexbox, like the Etch-A-Sketch) ===== */
+.keys {
+    display: flex;
+    flex-direction: column;       /* rows stacked top to bottom */
+    gap: 12px;
+}
+
+.row {
+    display: flex;                /* buttons side by side */
+    gap: 12px;
+}
+
+.key {
+    /* flex: 1 = every button in a row gets an equal share of the width */
+    flex: 1;
+    /* aspect-ratio: 1 makes each button a perfect square (circle with the radius) */
+    aspect-ratio: 1;
+    min-height: 56px;
+    border: none;
+    border-radius: 50%;           /* round buttons */
+    background: var(--key);
+    color: var(--text);
+    font: inherit;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.08s;
+}
+
+.key:hover {
+    background: var(--key-hover);
+}
+
+/* :active = while it's being pressed. Also used for keyboard presses (see .pressed) */
+.key:active,
+.key.pressed {
+    transform: scale(0.94);
+}
+
+/* the 0 key is twice as wide: flex: 2 takes 2 shares, plus the gap between */
+.key.wide {
+    flex: 2;
+    aspect-ratio: auto;
+    border-radius: 999px;         /* pill shape */
+    text-align: left;
+    padding-left: 28px;
+}
+
+.key.function {
+    background: var(--function);
+    font-size: 1.3rem;
+}
+.key.function:hover {
+    background: #5a6275;
+}
+
+.key.operator,
+.key.equals {
+    background: var(--operator);
+    color: #1c1f26;
+    font-size: 1.9rem;
+}
+.key.operator:hover,
+.key.equals:hover {
+    background: #ffb347;
+}
+
+/* the operator you just picked stays highlighted (JavaScript adds .active) */
+.key.operator.active {
+    background: var(--operator-on);
+    color: var(--operator);
+}
+
+/* the "." button turns off when there's already a decimal */
+.key:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* visible outline when using Tab on the keyboard */
+.key:focus-visible {
+    outline: 3px solid var(--operator);
+    outline-offset: 3px;
+}
+
+.hint {
+    margin: 0;
+    color: #5b6170;
+    font-size: 0.9rem;
+    text-align: center;
+}

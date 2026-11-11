@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- makes the page fit phone screens too -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="calculator">
+
+        <!-- ===== DISPLAY ===== -->
+        <div class="display">
+            <!-- small line on top: shows the pending math, like "12 +" -->
+            <p id="expression" class="expression"></p>
+            <!-- big number: what you're typing, or the answer.
+                 aria-live="polite" makes screen readers announce changes -->
+            <p id="screen" class="screen" aria-live="polite">0</p>
+        </div>
+
+        <!-- ===== BUTTONS =====
+             Each row is a flexbox row (see style.css).
+             data-digit / data-operator / data-action are little labels
+             JavaScript reads to know what each button does. -->
+        <div class="keys">
+            <div class="row">
+                <button class="key function" data-action="clear">AC</button>
+                <button class="key function" data-action="backspace" aria-label="Backspace">⌫</button>
+                <button class="key function" data-action="percent">%</button>
+                <button class="key operator" data-operator="/" aria-label="Divide">÷</button>
+            </div>
+            <div class="row">
+                <button class="key" data-digit="7">7</button>
+                <button class="key" data-digit="8">8</button>
+                <button class="key" data-digit="9">9</button>
+                <button class="key operator" data-operator="*" aria-label="Multiply">×</button>
+            </div>
+            <div class="row">
+                <button class="key" data-digit="4">4</button>
+                <button class="key" data-digit="5">5</button>
+                <button class="key" data-digit="6">6</button>
+                <button class="key operator" data-operator="-" aria-label="Subtract">−</button>
+            </div>
+            <div class="row">
+                <button class="key" data-digit="1">1</button>
+                <button class="key" data-digit="2">2</button>
+                <button class="key" data-digit="3">3</button>
+                <button class="key operator" data-operator="+" aria-label="Add">+</button>
+            </div>
+            <div class="row">
+                <!-- "wide" makes the 0 button twice as wide, like a real calculator -->
+                <button class="key wide" data-digit="0">0</button>
+                <button class="key" id="decimal" data-action="decimal" aria-label="Decimal point">.</button>
+                <button class="key equals" data-action="equals" aria-label="Equals">=</button>
+            </div>
+        </div>
+    </main>
+
+    <p class="hint">Tip: you can type on your keyboard too (Enter = equals, Backspace, Esc = clear).</p>
+
+    <!-- load JavaScript LAST so the buttons above already exist -->
+    <script src="mainscript.js"></script>
+</body>
+</html>

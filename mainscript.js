@@ -311,6 +311,12 @@ document.querySelector(".keys").addEventListener("click", function (event) {
 // event.key tells us which key ("7", "+", "Enter", ...)
 // =========================================================
 document.addEventListener("keydown", function (event) {
+    // Only react when the Basic calculator is showing, and not while
+    // you're typing in a text box (Scientific/Graph modes have their own typing).
+    if (document.querySelector("#basic-panel").hidden || event.target.tagName === "INPUT") {
+        return;
+    }
+
     const key = event.key;
     let selector = null;   // which on-screen button to "flash", so you see the press
 

@@ -9,6 +9,19 @@
 </head>
 <body>
 
+    <!-- ===== MODE TABS =====
+         Clicking a tab shows its panel and hides the others (see tabs code in scientific.js).
+         role="tab" / aria-selected help screen readers understand these are tabs. -->
+    <nav class="tabs" role="tablist">
+        <button class="tab" role="tab" data-panel="basic-panel" aria-selected="true">Basic</button>
+        <button class="tab" role="tab" data-panel="sci-panel" aria-selected="false">Scientific</button>
+        <button class="tab" role="tab" data-panel="graph-panel" aria-selected="false">Graph</button>
+    </nav>
+
+    <!-- ===================================================
+         MODE 1: BASIC (your Odin Project calculator, unchanged)
+         =================================================== -->
+    <section id="basic-panel" class="panel">
     <main class="calculator">
 
         <!-- ===== DISPLAY ===== -->
@@ -59,8 +72,122 @@
     </main>
 
     <p class="hint">Tip: you can type on your keyboard too (Enter = equals, Backspace, Esc = clear).</p>
+    </section>
 
-    <!-- load JavaScript LAST so the buttons above already exist -->
+    <!-- ===================================================
+         MODE 2: SCIENTIFIC
+         You type a WHOLE expression, like 2sin(30)+3^2,
+         and parser.js works it out with order of operations.
+         =================================================== -->
+    <section id="sci-panel" class="panel" hidden>
+        <div class="calculator sci">
+
+            <div class="display">
+                <!-- top row: degrees/radians switch -->
+                <div class="sci-top">
+                    <button id="angle-mode" class="angle-mode" aria-label="Switch between degrees and radians">DEG</button>
+                    <span id="sci-preview" class="expression"></span>
+                </div>
+                <!-- the expression you're typing. inputmode="none" stops the phone
+                     keyboard from popping up (you use the buttons instead),
+                     but you can still type on a computer keyboard. -->
+                <label for="sci-input" class="visually-hidden">Expression</label>
+                <input id="sci-input" class="sci-input" type="text" inputmode="none"
+                       autocomplete="off" spellcheck="false" placeholder="0">
+            </div>
+
+            <!-- data-insert = the text a button types into the box -->
+            <div class="keys sci-keys">
+                <div class="row">
+                    <button class="key function" data-insert="sin(">sin</button>
+                    <button class="key function" data-insert="cos(">cos</button>
+                    <button class="key function" data-insert="tan(">tan</button>
+                    <button class="key function" data-insert="ln(">ln</button>
+                    <button class="key function" data-insert="log(">log</button>
+                </div>
+                <div class="row">
+                    <button class="key function" data-insert="asin(" aria-label="inverse sine">sin⁻¹</button>
+                    <button class="key function" data-insert="acos(" aria-label="inverse cosine">cos⁻¹</button>
+                    <button class="key function" data-insert="atan(" aria-label="inverse tangent">tan⁻¹</button>
+                    <button class="key function" data-insert="√(" aria-label="square root">√</button>
+                    <button class="key function" data-insert="^" aria-label="power">xʸ</button>
+                </div>
+                <div class="row">
+                    <button class="key function" data-insert="π" aria-label="pi">π</button>
+                    <button class="key function" data-insert="e">e</button>
+                    <button class="key function" data-insert="^2" aria-label="squared">x²</button>
+                    <button class="key function" data-insert="(">(</button>
+                    <button class="key function" data-insert=")">)</button>
+                </div>
+                <div class="row">
+                    <button class="key" data-insert="7">7</button>
+                    <button class="key" data-insert="8">8</button>
+                    <button class="key" data-insert="9">9</button>
+                    <button class="key operator" data-insert="÷" aria-label="Divide">÷</button>
+                    <button class="key function" data-sci="clear">AC</button>
+                </div>
+                <div class="row">
+                    <button class="key" data-insert="4">4</button>
+                    <button class="key" data-insert="5">5</button>
+                    <button class="key" data-insert="6">6</button>
+                    <button class="key operator" data-insert="×" aria-label="Multiply">×</button>
+                    <button class="key function" data-sci="backspace" aria-label="Backspace">⌫</button>
+                </div>
+                <div class="row">
+                    <button class="key" data-insert="1">1</button>
+                    <button class="key" data-insert="2">2</button>
+                    <button class="key" data-insert="3">3</button>
+                    <button class="key operator" data-insert="−" aria-label="Subtract">−</button>
+                    <button class="key function" data-insert="ans" aria-label="Previous answer">ans</button>
+                </div>
+                <div class="row">
+                    <button class="key" data-insert="0">0</button>
+                    <button class="key" data-insert=".">.</button>
+                    <button class="key function" data-insert="!" aria-label="factorial">n!</button>
+                    <button class="key operator" data-insert="+" aria-label="Add">+</button>
+                    <button class="key equals" data-sci="equals" aria-label="Equals">=</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- past answers: click one to reuse it -->
+        <div class="history-box">
+            <h2>History</h2>
+            <ul id="sci-history" class="sci-history"></ul>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         MODE 3: GRAPH
+         Type functions of x (like x^2 or sin(x)) and they
+         get drawn on a <canvas> (a drawing surface).
+         =================================================== -->
+    <section id="graph-panel" class="panel graph" hidden>
+        <aside class="graph-side">
+            <h2>Functions</h2>
+            <!-- JavaScript fills this list with a row for each function -->
+            <div id="function-list" class="function-list"></div>
+            <button id="add-function" class="small-button">+ Add function</button>
+
+            <div class="zoom-buttons">
+                <button id="zoom-in" class="small-button" aria-label="Zoom in">+</button>
+                <button id="zoom-out" class="small-button" aria-label="Zoom out">−</button>
+                <button id="zoom-reset" class="small-button">Reset view</button>
+            </div>
+            <p class="graph-help">Drag to move around. Scroll to zoom. Hover a curve to trace it. Graphs use radians.</p>
+            <p id="trace" class="trace" aria-live="polite"></p>
+        </aside>
+
+        <div class="canvas-wrap">
+            <canvas id="graph-canvas" aria-label="Graph of your functions"></canvas>
+        </div>
+    </section>
+
+    <!-- load JavaScript LAST so everything above already exists.
+         parser.js goes first because the other two use it. -->
     <script src="mainscript.js"></script>
+    <script src="parser.js"></script>
+    <script src="scientific.js"></script>
+    <script src="graph.js"></script>
 </body>
 </html>

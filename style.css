@@ -170,3 +170,337 @@ body {
     font-size: 0.9rem;
     text-align: center;
 }
+
+
+/* =========================================================
+   SCIENTIFIC + GRAPH MODES
+   ========================================================= */
+
+/* the "hidden" attribute must ALWAYS hide things,
+   even if another rule says display: flex */
+[hidden] {
+    display: none !important;
+}
+
+/* push everything to the top instead of the middle (graph mode is tall) */
+body {
+    justify-content: flex-start;
+}
+
+/* ===== TABS ===== */
+.tabs {
+    display: flex;
+    background: var(--body);
+    padding: 5px;
+    border-radius: 999px;
+    gap: 4px;
+}
+
+.tab {
+    min-height: 44px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+.tab:hover {
+    color: var(--text);
+}
+.tab[aria-selected="true"] {
+    background: var(--operator);
+    color: var(--body);
+}
+
+/* each mode's area */
+.panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+/* hides text visually but screen readers still read it */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+/* ===== SCIENTIFIC ===== */
+.calculator.sci {
+    max-width: 440px;
+}
+
+.sci-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.angle-mode {
+    min-height: 32px;
+    padding: 4px 12px;
+    border: 1px solid var(--muted);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--operator);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* the preview line can be long, so let it shrink with "…" */
+.sci-top .expression {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sci-input {
+    width: 100%;
+    margin-top: 8px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font: inherit;
+    font-size: 2.2rem;
+    font-weight: 300;
+    text-align: right;
+    caret-color: var(--operator);    /* orange blinking cursor */
+}
+.sci-input::placeholder {
+    color: #4a5161;
+}
+
+/* 5 buttons per row: rounded rectangles instead of circles so the words fit */
+.sci-keys .key {
+    aspect-ratio: auto;
+    min-height: 54px;
+    border-radius: 16px;
+    font-size: 1.3rem;
+    padding: 0;
+}
+.sci-keys .key.function {
+    font-size: 1rem;
+}
+
+/* ===== HISTORY ===== */
+.history-box {
+    width: 100%;
+    max-width: 440px;
+}
+.history-box h2 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    color: #5b6170;
+}
+.sci-history {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.history-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;     /* right-aligned like the display */
+    gap: 2px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid #d5dae3;
+    border-radius: 12px;
+    font: inherit;
+    cursor: pointer;
+}
+.history-item:hover {
+    border-color: var(--operator);
+}
+.history-q {
+    color: #6b7180;
+    font-size: 0.85rem;
+}
+.history-a {
+    color: var(--body);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* ===== GRAPH ===== */
+.panel.graph {
+    max-width: 1200px;
+    flex-direction: row;          /* sidebar next to the graph */
+    flex-wrap: wrap;              /* ...but stacked on phones */
+    align-items: stretch;
+}
+
+.graph-side {
+    flex: 1 1 260px;
+    min-width: 0;                 /* lets it shrink on phones instead of sticking out */
+    background: var(--body);
+    color: var(--text);
+    border-radius: 20px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.graph-side h2 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.function-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.function-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.function-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.function-input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;                 /* lets it shrink instead of overflowing */
+    min-height: 40px;
+    padding: 6px 10px;
+    background: var(--screen);
+    color: var(--text);
+    border: 2px solid;            /* color set by JavaScript to match the curve */
+    border-radius: 10px;
+    font: inherit;
+    font-size: 1rem;
+}
+.function-input:focus {
+    outline: 2px solid var(--text);
+    outline-offset: 1px;
+}
+
+.function-error {
+    margin: 4px 0 0 60px;
+    color: #ff9a8a;
+    font-size: 0.85rem;
+    min-height: 0;
+}
+.function-error:empty {
+    display: none;
+}
+
+.remove-button {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--key);
+    color: var(--muted);
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+.remove-button:hover {
+    background: var(--key-hover);
+    color: var(--text);
+}
+
+.small-button {
+    min-height: 40px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 10px;
+    background: var(--key);
+    color: var(--text);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+.small-button:hover {
+    background: var(--key-hover);
+}
+.small-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.zoom-buttons {
+    display: flex;
+    gap: 8px;
+}
+.zoom-buttons .small-button:last-child {
+    flex: 1;
+}
+
+.graph-help {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.trace {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--operator);
+    min-height: 1.3em;
+}
+
+/* the canvas takes all the leftover width */
+.canvas-wrap {
+    flex: 999 1 560px;
+    min-width: 0;
+    border-radius: 20px;
+    overflow: hidden;             /* rounds the canvas corners */
+    background: var(--screen);
+}
+
+#graph-canvas {
+    display: block;
+    width: 100%;
+    height: 620px;
+    cursor: grab;
+    touch-action: none;           /* lets finger-dragging move the graph instead of the page */
+}
+#graph-canvas.dragging {
+    cursor: grabbing;
+}
+
+/* phones: shorter graph */
+@media (max-width: 600px) {
+    #graph-canvas {
+        height: 420px;
+    }
+    .canvas-wrap {
+        flex-basis: 100%;
+    }
+}
